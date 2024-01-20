@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="manifest" href="img/site.webmanifest">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Calculadora - Teste JS</title>
+</head>
+<body>
+    
+    <main>
+        <div class="container">
+            <div class="container-center">
+                <div id="calculadora" class="calculadora">
+                    <div class="painel-superior">
+                        <div class="prompt-title">
+                            <p id="titulo">Calculadora simples</p>
+                            <p id="prompt-hist"></p>
+                        </div>
+                        <div class="prompt">
+                            <p id="visor">0123456789 +-*/</p>
+                        </div>
+                    </div>
+                    <div class="painel-inferior">
+                        <button type="button" id="clear" class="btn-funcao" value="fC">C</button>
+                        <button type="button" id="btn-abre-parentese" class="btn-funcao" value="fP">(</button>
+                        <button type="button" id="btn-fecha-parentese" class="btn-funcao" value="fP">)</button>
+                        <button type="button" class="btn-funcao" value="oD">÷</button>
+                        <button type="button" id="btn-sete" class="btn-car" value="7">7</button>
+                        <button type="button" id="btn-oito" class="btn-car" value="8">8</button>
+                        <button type="button" id="btn-nove" class="btn-car" value="9">9</button>
+                        <button type="button" class="btn-funcao" value="oM">x</button>
+                        <button type="button" id="btn-quat" class="btn-car" value="4">4</button>
+                        <button type="button" id="btn-cinco" class="btn-car" value="5">5</button>
+                        <button type="button" id="btn-seis" class="btn-car" value="6">6</button>
+                        <button type="button" id="somar" class="btn-funcao" value="oA">+</button>
+                        <button type="button" id="btn-um" class="btn-car" value="1">1</button>
+                        <button type="button" id="btn-dois" class="btn-car" value="2">2</button>
+                        <button type="button" id="btn-tres" class="btn-car" value="3">3</button>
+                        <button type="button" id="subtrair" class="btn-funcao" value="oN">-</button>
+                        <button type="button" id="btn-sinal" class="btn-car" value="fS">+/-</button>
+                        <button type="button" id="btn-zero" class="btn-car" value="0">0</button>
+                        <button type="button" id="btn-vir" class="btn-car" value=",">,</button>
+                        <button type="button" class="btn-resultado" value="R">=</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/Script.js"></script>
+</body>
+</html>
