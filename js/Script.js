@@ -19,7 +19,9 @@ let btnClear    = document.querySelector("#clear");
 let btnSinal    = document.querySelector("#btn-sinal");
 let btnResul    = document.querySelector(".btn-resultado");
 let btnSomar    = document.querySelector("#somar");
-let btnSubtrair = document.querySelector("#subtrair")
+let btnSubtrair = document.querySelector("#subtrair");
+let btnMultiplicar = document.querySelector("#multiplicar");
+let btnDividir  = document.querySelector("#divisao");
 
 /*Criando a classe calculadora */
 class Calculadora{
@@ -49,8 +51,8 @@ class Calculadora{
             if(string.includes('÷')){
                 string = string.replaceAll('÷','/');
             }
-            if(string.includes('x')){
-                string = string.replaceAll('x','*');
+            if(string.includes('×')){
+                string = string.replaceAll('×','*');
             }
         }else{
             if(string.includes('.')){
@@ -60,7 +62,7 @@ class Calculadora{
                 string = string.replaceAll('/','÷');
             }
             if(string.includes('*')){
-                string = string.replaceAll('*','x');
+                string = string.replaceAll('*','×');
             }
         }
         return string;
@@ -86,7 +88,7 @@ class Calculadora{
                 return '';
             }
         }else{
-                return string;
+            return string;
         }
     }
 
@@ -132,12 +134,16 @@ class Calculadora{
     }
 
     metodoMudarSinal(){
-        this.btnDigitado = true;
-        if(eval(this.visorDados.innerText.replace(',','.')) > 0){
-            this.visorDados.innerText = `-${this.visorDados.innerText}`;
+        try{
+            this.btnDigitado = true;
+            if(eval(this.visorDados.innerText.replace(',','.')) > 0){
+                this.visorDados.innerText = `-${this.visorDados.innerText}`;
 
-        }else if(eval(this.visorDados.innerText.replace(',','.')) < 0){
-            this.visorDados.innerText = `${this.visorDados.innerText.replaceAll('-','')}`;
+            }else if(eval(this.visorDados.innerText.replace(',','.')) < 0){
+                this.visorDados.innerText = `${this.visorDados.innerText.replaceAll('-','')}`;
+            }
+        }catch(e){
+            console.log(`Erro ao MUDAR SINAL: ${e.message}`);
         }
     }
 
@@ -184,22 +190,25 @@ class Calculadora{
         try{
             this.operacaoAtivada = true;
             if(this.memoriaDeEquacao != null){
-                try{let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
-                if((ultimoCaracter!="-")){
-                    this.metodoFormarEquacao("-");
-                }else if(this.btnDigitado){
-                    this.metodoFormarEquacao(this.visorDados.innerText);
-                    this.btnDigitado = false;   
-                }
+                try{
+                    let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
+                    if(((ultimoCaracter="+")||(ultimoCaracter="*")||(ultimoCaracter="/"))&&(!this.btnDigitado)){
+                        this.metodoFormarEquacao("-");
+                    }else if(this.btnDigitado){
+                        this.metodoFormarEquacao(this.visorDados.innerText);
+                        this.metodoFormarEquacao("-");
+                        this.btnDigitado = false;   
+                    }
                 }catch(e){
                     console.log(`Erro ao SUBTRAIR: ${e.message}`)
                 }    
             }else{
                 this.metodoFormarEquacao(this.visorDados.innerText);
                 this.metodoFormarEquacao("-")
+                this.btnDigitado = false;
             }
         }catch(e){
-            console.log(`Erro ao SUBTRAIR: ${e.message}`)
+            console.log(`Erro ao SUBTRAIR: ${e.message}`);
         } 
     }
     
@@ -209,10 +218,11 @@ class Calculadora{
             if(this.memoriaDeEquacao != null){
                 try{
                     let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
-                    if((ultimoCaracter!="+")){
+                    if(((ultimoCaracter="-")||(ultimoCaracter="*")||(ultimoCaracter="/"))&&(!this.btnDigitado)){
                         this.metodoFormarEquacao("+"); 
                     }else if(this.btnDigitado){
                         this.metodoFormarEquacao(this.visorDados.innerText);
+                        this.metodoFormarEquacao("+"); 
                         this.btnDigitado = false;
                     }
                 }catch(e){
@@ -221,9 +231,62 @@ class Calculadora{
             }else{
                 this.metodoFormarEquacao(this.visorDados.innerText);
                 this.metodoFormarEquacao("+");    
+                this.btnDigitado = false;
             }
         }catch(e){
-            console.log(`Erro ao SOMAR: ${e.message}`)
+            console.log(`Erro ao SOMAR: ${e.message}`);
+        }
+    }
+
+    operacaoMultiplicar(){
+        try{
+            this.operacaoAtivada = true;
+            if(this.memoriaDeEquacao != null){
+                try{
+                    let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
+                    if(((ultimoCaracter="+")||(ultimoCaracter="-")||(ultimoCaracter="/"))&&(!this.btnDigitado)){
+                        this.metodoFormarEquacao("*");
+                    }else if(this.btnDigitado){
+                        this.metodoFormarEquacao(this.visorDados.innerText);
+                        this.metodoFormarEquacao("*");
+                        this.btnDigitado = false;
+                    }
+                }catch(e){
+                    console.log(`Erro ao MULTIPLICAR: ${e.message}`);
+                }
+            }else{
+                this.metodoFormarEquacao(this.visorDados.innerText);
+                this.metodoFormarEquacao("*");
+                this.btnDigitado = false;
+            }
+        }catch(e){
+            console.log(`Erro ao MULTIPLICAR: ${e.message}`);
+        }
+    }
+
+    operacaoDividir(){
+        try{
+            this.operacaoAtivada = true;
+            if(this.memoriaDeEquacao != null){
+                try{
+                    let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
+                    if(((ultimoCaracter="+")||(ultimoCaracter="-")||(ultimoCaracter="/"))&&(!this.btnDigitado)){
+                        this.metodoFormarEquacao("/");
+                    }else if(this.btnDigitado){
+                        this.metodoFormarEquacao(this.visorDados.innerText);
+                        this.metodoFormarEquacao("/");
+                        this.btnDigitado = false;
+                    }
+                }catch(e){
+                    console.log(`Erro ao DIVIDIR: ${e.message}`);
+                }
+            }else{
+                this.metodoFormarEquacao(this.visorDados.innerText);
+                this.metodoFormarEquacao("/");
+                this.btnDigitado = false;
+            }
+        }catch(e){
+            console.log(`Erro ao DIVIDIR: ${e.message}`);
         }
     }
 }
@@ -242,6 +305,8 @@ btnVirgula.addEventListener("click",calculadora.metodoDigitar.bind(calculadora,"
 
 btnSomar.addEventListener("click",calculadora.operacaoSomar.bind(calculadora));
 btnSubtrair.addEventListener("click",calculadora.operacaoSubtrair.bind(calculadora));
+btnMultiplicar.addEventListener("click",calculadora.operacaoMultiplicar.bind(calculadora));
+btnDividir.addEventListener("click",calculadora.operacaoDividir.bind(calculadora));
 
 btnZero.addEventListener("click",calculadora.metodoDigitar.bind(calculadora,"0"));
 btnUm.addEventListener("click",calculadora.metodoDigitar.bind(calculadora,"1"));
