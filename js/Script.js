@@ -43,6 +43,19 @@ class Calculadora{
         }
     }
 
+    metodoRemoverUltimoZero(string){
+        let numeroRecebido = string; 
+        let notZero = false;
+        for(let i=numeroRecebido.length-1;(i!==0)&&(!notZero);i--){
+            if(((numeroRecebido[i] === '0')||(numeroRecebido[i] === ','))&&(!notZero)){
+                numeroRecebido = numeroRecebido.slice(0,i);
+            }else{
+                notZero = true;
+            }
+        }
+        return numeroRecebido;
+    }
+
     metodoTradutor(string,boolean){
        try{ if(boolean){
             if(string.includes(',')){
@@ -154,16 +167,26 @@ class Calculadora{
         if(isNaN(string)){
            try{
                 if((string == "+")||(string == "-")||(string == "/")||(string == "*")){
-                    if(this.memoriaDeEquacao == null){
-                        this.memoriaDeEquacao = `${string}`;
-                    }else{
                     let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
                     if((ultimoCaracter=="+")||(ultimoCaracter=="-")||(ultimoCaracter=="/")||(ultimoCaracter== "*")){
                         this.memoriaDeEquacao = this.memoriaDeEquacao.slice(0,-1);
                     }
-                        this.memoriaDeEquacao += `${string}`;
-                    }
+                    this.memoriaDeEquacao += `${string}`;
                     this.saidaDaMemoriaDeEquacao.innerText = this.metodoTradutor(this.memoriaDeEquacao,false);
+                }else if(string.includes(",")){
+                    let numeroSemVirgula = string.replaceAll(',','');
+                    if(!isNaN(numeroSemVirgula)){
+                        numeroSemVirgula = this.metodoRemoverUltimoZero(string);
+                        numeroSemVirgula = this.metodoTradutor(numeroSemVirgula,true);
+                            if(this.memoriaDeEquacao == null){
+                                this.memoriaDeEquacao = numeroSemVirgula;
+                            }else{
+                                this.memoriaDeEquacao += numeroSemVirgula;
+                            }
+                        this.saidaDaMemoriaDeEquacao.innerText = this.metodoTradutor(this.memoriaDeEquacao,false);
+                    }else{
+                        console.log(`Erro: Caractere não esperado recebido ('${string}')`);
+                    }
                 }else{
                     console.log(`Erro: Caractere não esperado recebido ('${string}')`);
                 }
@@ -295,7 +318,13 @@ class Calculadora{
 let calculadora = new Calculadora("#visor","#prompt-hist","#clear");
 
 /*Listando ações*/
-btnResul.addEventListener("click",function(){alert(calculadora.visorDados.innerText)});
+btnResul.addEventListener("click",function(){
+alert(`
+Visor: ${calculadora.visorDados.innerText} 
+Memória: ${calculadora.memoriaDeEquacao}
+`)
+});
+
 btnClear.addEventListener("click",calculadora.metodoLimparVisor.bind(calculadora));
 btnSinal.addEventListener("click",calculadora.metodoMudarSinal.bind(calculadora));
 
