@@ -57,18 +57,12 @@ class Calculadora{
                 (string=='/')
             ){
                 if(this.memoriaDeEquacao == null){
-                this.memoriaDeEquacao = string;
-            }else{
-                this.memoriaDeEquacao += string;
-            }
-            }else{
-                if(this.memoriaDeEquacao == null){
-                    this.memoriaDeEquacao = '0';
+                    this.memoriaDeEquacao = string;
                 }else{
-                    this.memoriaDeEquacao += '0';
+                    this.memoriaDeEquacao += string;
                 }
+                this.saidaDaMemoriaDeEquacao.innerText = this.metodoTradutor(this.memoriaDeEquacao,false);
             }
-            this.saidaDaMemoriaDeEquacao.innerText = this.metodoTradutor(this.memoriaDeEquacao,false);
         }catch(e){
             console.log(`Erro ao incrementar na MEMÓRIA DE EQUAÇÃO: ${e.message}`);
         }
@@ -227,9 +221,9 @@ class Calculadora{
         }
         if(isNaN(string)){
            try{
-                if((string == "+")||(string == "-")||(string == "/")||(string == "*")){
+                if((string === "+")||(string === "-")||(string === "/")||(string === "*")){
                     let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
-                    if((ultimoCaracter=="+")||(ultimoCaracter=="-")||(ultimoCaracter=="/")||(ultimoCaracter== "*")){
+                    if((ultimoCaracter==="+")||(ultimoCaracter==="-")||(ultimoCaracter==="/")||(ultimoCaracter=== "*")){
                         this.memoriaDeEquacao = this.memoriaDeEquacao.slice(0,-1);
                     }
                     this.setMemoriaDeEquacao(string);
@@ -394,18 +388,37 @@ class Calculadora{
             console.log(`Erro ao DIVIDIR: ${e.message}`);
         }
     }
+
+    metodoFinalizarCalculo(){
+        try{
+            let ultimoCaracter = this.memoriaDeEquacao.slice(-1);
+            let resultado;
+            if(isNaN(ultimoCaracter)){
+                this.metodoFormarEquacao(this.visorDados.innerText);
+                resultado = eval(this.memoriaDeEquacao);
+                this.saidaDaMemoriaDeEquacao.innerText += '=';
+                this.visorDados.innerText = resultado;
+                this.btnDigitado = false;
+                /* COMENTÁRIO PRO MEU EU DO FUTURO:
+
+                Dá um geito de que quando finalizar a equação e caso o usuário ative uma operação,
+                o resultado vá para a memória de equação - já "limpa" - junto com o sinal de operação selecionada.
+
+                PS.: Talvez dê de tirar esse "btnDigitado" nesse método, criando um novo atributo para a classe
+                ou um novo método.
+                */
+            }
+        }catch(e){
+            console.log(`Erro ao FINALIZAR RESULTADO: ${e.message}`);
+        }
+    }
 }
 
 /*Instanciândo a classe calculadora*/
 let calculadora = new Calculadora("#visor","#prompt-hist","#clear","#btn-abre-parentese");
 
 /*Listando ações*/
-btnResul.addEventListener("click",function(){
-alert(`
-Visor: ${calculadora.visorDados.innerText} 
-Memória: ${calculadora.memoriaDeEquacao}
-`)
-});
+btnResul.addEventListener("click",calculadora.metodoFinalizarCalculo.bind(calculadora));
 
 btnClear.addEventListener("click",calculadora.metodoLimparVisor.bind(calculadora));
 btnSinal.addEventListener("click",calculadora.metodoMudarSinal.bind(calculadora));
