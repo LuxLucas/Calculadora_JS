@@ -8,6 +8,8 @@
 
 # Calculadora JS - *Pausado*
 
+**Autor:** _Lucas Pizoni Flôres_
+
 [![JavaScript][logo-js]](# 'JavaScript')
 [![HTML5][logo-html]](# 'HTML5')
 [![CSS3][logo-css]](# 'CSS3')  
